@@ -17,11 +17,11 @@ export function SongInterface(props){
   <SongContext.Provider value={{set_list, update_set_list, current_song, update_current_song, current_set_song, update_current_set_song}}>
   <div id="wrapper" className="box-border flex flex-row mx-auto w-11/12 relative">
     <div id="side_bar" className="box-border min-w-max m-0 p-0.6 w-1/5">
-        <Search database = {props.database} />
-        <p id="set_list_label" className = "mb-2 text-base font-semibold text-black">Set List</p>
+        <Search database = {props.database} dashboard_display = {"block"} hide_with_no_input = {false} />
+        <p id="set_list_label" className = "mb-2 text-base font-semibold">Set List</p>
         <DraggableList database = {props.database} 
           set_list={set_list} />
-        <ExportInterface/>
+        <ExportInterface edit_list = {props.edit_list}/>
     </div>
     <div id="chord_display" className="box-border min-w-max ml-3 w-4/5 block">
       <ChordDashboard song = {current_song}/>

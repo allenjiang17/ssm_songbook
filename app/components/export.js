@@ -1,32 +1,45 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SongContext} from '../song_context.js';
 import {useContext} from 'react';
+import { TextButton } from './text_button.js';
+import Popup from 'reactjs-popup';
+import { useUser, useOrganizationList } from '@clerk/nextjs';
 
 import * as docx from 'docx'
 import * as jspdf from 'jspdf'
 import PptxGenJS from 'pptxgenjs'
 
-export function ExportInterface() {
-    const {set_list} = useContext(SongContext);
-    var export_select_style, export_button_style;
+export function ExportInterface(props) {
+  const {user} = useUser();
+  const can_edit = props.edit_list.includes(user?.id);
 
+    const {set_list} = useContext(SongContext);
+    const [popup_open, set_popup_open] = useState(false);
+    const [save_set_name, set_save_set_name] = useState();
+    const closePopup = () => set_popup_open(false);
+
+    //hide export button if set is 0
+    var export_button_style;
     if (set_list.length == 0) {
-       export_select_style = "hidden";
        export_button_style = "hidden";
 
     } else {
-       export_select_style = "box-border min-w-fit text-xs p-2 border-b border-gray-300 focus:outline-gray-300 focus:border-gray-300"; 
-       export_button_style = "box-border inline-block font-semibold text-white text-xs p-2 ml-1 bg-ssmbluenight rounded-md hover:bg-ssmblue400";
+       export_button_style = "";
     }
+
+    //create default set name
+    var today = new Date();
+    var date = String(today.getMonth() + 1).padStart(2, '0') + String(today.getDate()).padStart(2, '0') + String(today.getFullYear()).substring(2);
+    var write_name = 'set' + date;
+
+    useEffect(()=>{
+      set_save_set_name(write_name);
+    },[]);
 
     function downloadSet() {
 
         var list_of_songs = set_list;
-    
-        var today = new Date();
-        var date = String(today.getMonth() + 1).padStart(2, '0') + String(today.getDate()).padStart(2, '0') + String(today.getFullYear()).substring(2);
-        var write_name = 'set' + date;
         const dtype = document.getElementById("export_select").value;
     
         if (dtype == "pdf") {
@@ -62,18 +75,60 @@ export function ExportInterface() {
         } 
     }
 
+    function openExportModal(){
+      set_popup_open(o=>!o);
+    }
 
+    async function saveSetToDb(){
+      if (!can_edit) {window.alert("User has no permission to save sets online"); return}
+
+      var response = await fetch('/api/save_set_to_mongo_db', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({set_name: save_set_name, set_author: user.fullName, set_list: set_list, set_date: date})
+        });
+
+    console.log(response);
+    closePopup();
+    }
+
+    function handleInputChange(event){
+      set_save_set_name(event.target.value);
+    }
     return(
         <div>
-            <select defaultValue="" name="export_select" id="export_select" className={export_select_style}>
-                <option value="" disabled>Export Set</option>
-                <option value="docx">Word Doc</option>
-                <option value="pdf">PDF</option>
-                <option value="ppt">Powerpoint (Media Slides)</option>
-                <option value="text">Plain Text</option>
-            </select>
-            <button id="export_button" className={export_button_style} onClick={downloadSet}>Download</button>
+            <TextButton handler={openExportModal} button_text={"Export Set"} add_classes={export_button_style}/>
+
+            <Popup open={popup_open} onClose={closePopup}>
+            <div className="box-border bg-gray-100 rounded-md p-5 drop-shadow-lg dark:bg-gray-700">
+            <div className="flex justify-between">
+              <p className = "inline-block mb-2 text-lg font-semibold">Export Set</p>
+              <img src= "./x-lg.svg" className="inline-block h-fit ml-1 hover:bg-gray-300" onClick={closePopup}/>
+            </div>
+            <div className="mb-2">
+              <p className = "mb-2 text-sm font-semibold">Save Set Online</p>
+                <input className="text-sm p-1 dark:bg-gray-800" value={save_set_name} onChange={handleInputChange}/>
+                <TextButton handler={saveSetToDb} button_text={"Save"}/>
+            </div>
+            <div className="mb-2">
+            <p className = "mb-2 text-sm font-semibold">Download Set as File</p>
+              <select defaultValue="" name="export_select" id="export_select" className="box-border min-w-fit text-xs p-2 border-b border-gray-300 focus:outline-gray-300 focus:border-gray-300 dark:bg-gray-800">
+                  <option value="" disabled>Export Set</option>
+                  <option value="docx">Word Doc</option>
+                  <option value="pdf">PDF</option>
+                  <option value="ppt">Powerpoint (Media Slides)</option>
+                  <option value="text">Plain Text</option>
+              </select>
+              <TextButton handler={downloadSet} button_text={"Download"}/>
+              </div>
+            </div>
+            </Popup>
+
         </div>
+
+        
     )
 
 }
@@ -198,7 +253,7 @@ function downloadDocx(content, filename) {
  *
  * @return list of strings
  */
-function splitLyrics(lyrics) {
+export function splitLyrics(lyrics) {
     lyrics = lyrics.split('\n')
     lyrics.push('') // add empty string so no need for ending statement
     var nlyrics = new Array();

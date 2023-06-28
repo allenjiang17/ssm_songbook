@@ -1,42 +1,52 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {SongLibraryTable} from '../components/song_library_search.js';
 import {EditSong} from '../components/edit_song.js';
 import {AddSong} from '../components/add_song.js';
 import {SongDisplay} from '../components/song_display.js';
 import {SheetDashboard} from '../components/sheet_dashboard.js';
 import {SongContext} from '../song_context.js';
+import { TextButton } from '../components/text_button.js';
+import { useUser } from "@clerk/nextjs";
 
 export function SongLibraryInterface(props){
 
-  const [set_list, update_set_list] = useState([]); 
-  const [current_set_song, update_current_set_song] = useState();
+  const [database, update_database] = useState(props.initialDatabase);
   const [current_song, update_current_song] = useState(); //eventually move up to top level
-
   const [edit_or_add, update_edit_or_add] = useState();
+
+  const {user} = useUser();
+  const can_edit = props.edit_list.includes(user?.id);
+  if (can_edit) {
+    console.log("User has edit privileges")
+  }
 
   function switchAddSong() {
       update_edit_or_add("add");
-
   }
-  var edit_song_interface;
+
+  var edit_song_interface, sidebar_width;
 
   if (edit_or_add == "edit") {
     edit_song_interface = <EditSong/>
+    sidebar_width = "w-1/2";
 
   } else if (edit_or_add== "add") {
     edit_song_interface = <AddSong/>
+    sidebar_width = "w-1/2";
+
 
   } else {
     edit_song_interface = <div className="w-0"></div>
+    sidebar_width = "w-full";
   }
 
   return (
-  <SongContext.Provider value={{current_song, update_current_song, edit_or_add, update_edit_or_add}}>
+  <SongContext.Provider value={{database, update_database, current_song, update_current_song, edit_or_add, update_edit_or_add, can_edit}}>
   <div id="wrapper" className="box-border flex flex-row mx-auto w-11/12 relative">
-    <div id="side_bar" className="box-border mr-0 p-0.6">
-        <SongLibraryTable database = {props.database} />
-        <button className="box-border inline-block font-semibold text-white text-sm p-2 mr-2 bg-ssmbluenight rounded-md hover:bg-ssmblue400" onClick={switchAddSong}>Add Song</button>
+    <div id="side_bar" className={`box-border mr-0 p-0.6 ${sidebar_width} transition-all`}>
+        <SongLibraryTable database = {database} />
+        <TextButton handler={switchAddSong} button_text={"Add Song"} add_classes={"py-2"}/>
     </div>
     {edit_song_interface}
   </div>

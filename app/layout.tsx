@@ -1,11 +1,9 @@
 import './globals.css'
 import Link from 'next/link'
-
+import { ClerkProvider } from '@clerk/nextjs'
+import { UserButton } from "@clerk/nextjs";
 import React, {useState} from 'react';
 import {SongContext} from './song_context.js';
-
-
-
 
 export const metadata = {
   title: 'SSM Songbook',
@@ -17,14 +15,14 @@ export default function RootLayout({
 }: {
   children: React.ReactNode
 }) {
-  
   return (
+    <ClerkProvider>
     <html lang="en">
-      <body>
+      <body className="dark:bg-gray-800 dark:text-white">
       <div id="header" className="box-border justify-between flex items-center h-14 pl-0.6% pr-0.6% pt-10 pb-8 mx-auto w-11/12">
         <div className="box-border flex items-center">
           <img id="ssm_icon" src="./ssm_icon.png" className="box-border inline-block h-8 mr-3"/>
-          <h1 className="inline-block m-0 p-0 text-3xl font-extrabold text-gray-800">songbook</h1>
+          <h1 className="inline-block m-0 p-0 text-3xl font-extrabold text-gray-800 dark:text-white">songbook</h1>
         </div>
         <div>
           <Link className ="inline-block mx-2 hover:text-gray-400 focus:underline focus:font-bold" href="./" tabIndex={0}>Create Set</Link>
@@ -32,10 +30,15 @@ export default function RootLayout({
           <Link className ="inline-block mx-2 hover:text-gray-400 focus:underline focus:font-bold" href="/song_library" tabIndex={0}>Song Library</Link>
           <p className="inline-block">/</p>
           <Link className ="inline-block mx-2 hover:text-gray-400 focus:underline focus:font-bold" href="/media_mode" tabIndex={0}>Media Mode</Link>
+          <UserButton appearance={{
+            elements: {
+              rootBox: 'inline-block mx-2 align-bottom'}}}/>
         </div>
+
       </div>
         {children}
       </body>
     </html>
+  </ClerkProvider>
   )
 }

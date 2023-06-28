@@ -19,7 +19,7 @@ export function SongDisplay(props) {
         }
     }
 
-    const style = "box-border w-full font-mono text-sm m-0 p-8 rounded-none border-solid border-2 " + props.window_height;
+    const style = "box-border w-full font-mono text-sm m-0 p-8 rounded-none border-solid border-2 dark:bg-gray-900 dark:border-none " + props.window_height;
 
     let display = "";
     if (props.song !== undefined) {

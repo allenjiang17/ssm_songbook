@@ -61,7 +61,7 @@ function ListItem(props) {
     if (current_set_song == props.id) {
         select_style = "box-border flex items-center flex-row justify-between w-full pt-2 pb-2 pr-2 drop-shadow bg-ssmblue400 text-white rounded";
     } else {
-        select_style = "box-border flex items-center flex-row justify-between w-full pt-2 pb-2 pr-2 drop-shadow bg-gray-100 hover:bg-gray-200 rounded";
+        select_style = "box-border flex items-center flex-row justify-between w-full pt-2 pb-2 pr-2 drop-shadow bg-gray-100 hover:bg-gray-200 rounded dark:bg-gray-700 dark:hover:bg-gray-600";
     }
 
     function selectSongToDisplay() {

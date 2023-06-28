@@ -3,6 +3,7 @@
 import React, {useState} from 'react';
 import {SongContext} from '../song_context.js';
 import {useContext} from 'react';
+import {TextButton} from './text_button.js'
 
 export function AddSongButton() {
     const {current_song, update_set_list, set_list} = useContext(SongContext); 
@@ -18,8 +19,7 @@ export function AddSongButton() {
     }
 
       return(
-        <button className="box-border inline-block font-semibold text-white text-sm pl-2 pr-2 ml-3 bg-ssmbluenight rounded-md hover:bg-ssmblue400" 
-        onClick={addSongToSet}>Add to Set</button>
+        <TextButton handler={addSongToSet} button_text={"Add to Set"}/>
       )
 
 }

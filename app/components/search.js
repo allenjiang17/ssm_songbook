@@ -29,22 +29,28 @@ export function Search(props){
 
     //search function
     let input = search_text.toUpperCase();
-    let showList = database.filter(song => song.title.toUpperCase().indexOf(input) == 0);
+    let showList;
+    
+    if (search_text.length == 0 && props.hide_with_no_input) {
+      showList = [];
+    } else {
+      showList = database.filter(song => song.title.toUpperCase().indexOf(input) == 0);
+    }
 
     return (
       <div className="mb-2">
-        <div className="bg-gray-100 mb-1 overflow-auto border border-gray-300 max-h-64 transition-all duration-700 ease-in-out">
+        <div className="bg-gray-100 mb-1 overflow-auto border border-gray-300 max-h-64 transition-all duration-700 ease-in-out dark:bg-gray-800">
           <SearchBar handlename = {handleInput}/>  
           <SearchBarResults showList = {showList} />
         </div>
-        <SearchDashboard list_of_tempos = {list_of_tempos} handlename = {handleFilterInput}/>
+        <SearchDashboard list_of_tempos = {list_of_tempos} handlename = {handleFilterInput} display = {props.dashboard_display}/>
       </div> 
     )
   }
   
   export function SearchBar(props) {
     return <input type="text" placeholder="Search.."
-    className="search_bar box-border w-full text-sm p-2 border-none border-b border-gray-300 focus:outline-gray-300 focus:border-gray-300" onChange={props.handlename}/>
+    className="search_bar box-border w-full text-sm p-2 border-none border-b border-gray-300 focus:outline-gray-300 focus:border-gray-300 dark:bg-gray-700 dark:text-white" onChange={props.handlename}/>
   }
   
   export function SearchBarResults(props){
@@ -71,7 +77,7 @@ export function Search(props){
         update_current_set_song(-1);
     }
 
-    return <li className="w-calc-100-minus-0.8em m-0 p-2 block text-sm font-normal hover:bg-gray-200 focus:bg-gray-300" tabIndex={0}
+    return <li className="w-calc-100-minus-0.8em m-0 p-2 block text-sm font-normal hover:bg-gray-200 focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600" tabIndex={0}
     data-id={props.song.id} onClick={selectSongToDisplay} onDoubleClick={addSongToSet}>{props.song.title}</li>
   }
 
@@ -80,9 +86,9 @@ export function Search(props){
     const tempo_options = props.list_of_tempos.map((tempo,index) => {return (<option key={index+1}value={tempo}>{tempo}</option>)})
 
     return(
-        <div className="text-sm">
+        <div className={`${props.display} text-sm`}>
             <label>Tempo:
-                <select className="box-border min-w-fit text-xs p-2 border-b border-gray-300 focus:outline-gray-300 focus:border-gray-300" defaultValue="Any" name="tempo_options" id="tempo_options" 
+                <select className="box-border min-w-fit text-xs p-2 border-b border-gray-300 focus:outline-gray-300 focus:border-gray-300 dark:bg-gray-800" defaultValue="Any" name="tempo_options" id="tempo_options" 
                     onChange={props.handlename}>
                         <option key={0} value="Any">Any</option>
                         {tempo_options}
