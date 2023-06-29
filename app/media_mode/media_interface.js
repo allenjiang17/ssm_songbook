@@ -39,7 +39,7 @@ export function MediaInterface(props){
         <Search database = {props.database} dashboard_display = {"hidden"} hide_with_no_input = {true} />
 
     </div>
-    <MediaLyricsInterface current_song={current_song}/>
+    <MediaLyricsInterface current_song={current_song} edit_list = {props.edit_list}/>
     <Popup open={popup_open} onClose={closePopup}>
         <div className="box-border bg-gray-100 w-96 rounded-md p-5 drop-shadow-lg dark:bg-gray-700">
               <div className="flex justify-between">

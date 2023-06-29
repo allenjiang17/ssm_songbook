@@ -11,9 +11,22 @@ import * as jspdf from 'jspdf'
 import PptxGenJS from 'pptxgenjs'
 
 export function ExportInterface(props) {
-  const {user} = useUser();
-  const can_edit = props.edit_list.includes(user?.id);
+  //user auth
+  const {isLoaded, isSignedIn, user} = useUser();
+  var can_edit, guest;
+  if (isLoaded && isSignedIn) {
+    can_edit = props.edit_list.includes(user?.id);
+    if (can_edit) {
+      console.log("User has edit privileges")
+    } else {
+      console.log("User has no edit privileges")
+    }
+  } else {
+    guest = true;
+    can_edit = false;
+  }
 
+  //state variables
     const {set_list} = useContext(SongContext);
     const [popup_open, set_popup_open] = useState(false);
     const [save_set_name, set_save_set_name] = useState();
@@ -80,6 +93,8 @@ export function ExportInterface(props) {
     }
 
     async function saveSetToDb(){
+
+      if (guest) {window.alert("Please sign-in to save sets to the online database"); return}
       if (!can_edit) {window.alert("User has no permission to save sets online"); return}
 
       var response = await fetch('/api/save_set_to_mongo_db', {

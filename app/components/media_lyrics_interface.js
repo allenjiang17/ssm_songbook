@@ -8,10 +8,24 @@ import {splitLyrics} from './export.js'
 import {MediaDisplay} from './media_display.js'
 import Popup from 'reactjs-popup';
 import { TextButton } from './text_button.js';
+import { useUser, SignedIn, SignedOut } from '@clerk/nextjs';
 
 export function MediaLyricsInterface(props) {
 
-
+    //user auth
+    const {isLoaded, isSignedIn, user} = useUser();
+    var can_edit, guest;
+    if (isLoaded && isSignedIn) {
+        can_edit = props.edit_list.includes(user?.id);
+        if (can_edit) {
+        console.log("User has edit privileges")
+        } else {
+        console.log("User has no edit privileges")
+        }
+    } else {
+        guest = true;
+        can_edit = false;
+    }
 
     const {current_song} = useContext(SongContext);
 
@@ -33,7 +47,9 @@ export function MediaLyricsInterface(props) {
 
 
     async function editLyricsOpen(){
-    //if (!can_edit) {window.alert("user has no permission to edit"); return}
+    if (guest) {window.alert("Please sign-in to edit the lyrics"); return}
+    if (!can_edit) {window.alert("User has no permission to edit lyrics. Contact your admin to be authorized to edit lyrics."); return}
+
         set_popup_open(o=>!o);      
     }
 
@@ -75,14 +91,16 @@ export function MediaLyricsInterface(props) {
                 <MediaDisplay/>
             </div>
             <Popup open={popup_open} onClose={closePopup}>
-            <div className="box-border bg-gray-100 w-96 rounded-md p-5 w-fit h-fit drop-shadow-lg dark:bg-gray-700">
-              <div className="flex justify-between">
-                <p className = "inline-block mb-2 text-lg font-semibold">Edit Lyrics</p>
-                <img src= "./x-lg.svg" className="inline-block ml-1 h-fit hover:bg-gray-300" onClick={closePopup}/>
-              </div>
-              <textarea className="box-border w-full font-mono text-sm m-0 p-8 rounded-none border-solid border-2 h-[60vh] w-[50vw] dark:bg-gray-900 dark:border-none" value={edit_lyrics_sheet} onChange={updateSheet}></textarea>
-              <TextButton handler={submitEditLyrics} button_text={"Submit"}/>
-            </div>
+                <SignedIn>
+                    <div className="box-border bg-gray-100 w-96 rounded-md p-5 w-fit h-fit drop-shadow-lg dark:bg-gray-700">
+                    <div className="flex justify-between">
+                        <p className = "inline-block mb-2 text-lg font-semibold">Edit Lyrics</p>
+                        <img src= "./x-lg.svg" className="inline-block ml-1 h-fit hover:bg-gray-300" onClick={closePopup}/>
+                    </div>
+                    <textarea className="box-border w-full font-mono text-sm m-0 p-8 rounded-none border-solid border-2 h-[60vh] w-[50vw] dark:bg-gray-900 dark:border-none" value={edit_lyrics_sheet} onChange={updateSheet}></textarea>
+                    <TextButton handler={submitEditLyrics} button_text={"Submit"}/>
+                    </div>
+                </SignedIn>
              </Popup>
         </div>
         </LyricContext.Provider>

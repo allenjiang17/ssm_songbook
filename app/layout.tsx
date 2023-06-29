@@ -1,9 +1,10 @@
 import './globals.css'
 import Link from 'next/link'
 import { ClerkProvider } from '@clerk/nextjs'
-import { UserButton } from "@clerk/nextjs";
+import { UserButton, SignInButton, SignedOut } from "@clerk/nextjs";
 import React, {useState} from 'react';
 import {SongContext} from './song_context.js';
+
 
 export const metadata = {
   title: 'SSM Songbook',
@@ -24,15 +25,20 @@ export default function RootLayout({
           <img id="ssm_icon" src="./ssm_icon.png" className="box-border inline-block h-8 mr-3"/>
           <h1 className="inline-block m-0 p-0 text-3xl font-extrabold text-gray-800 dark:text-white">songbook</h1>
         </div>
-        <div>
-          <Link className ="inline-block mx-2 hover:text-gray-400 focus:underline focus:font-bold" href="./" tabIndex={0}>Create Set</Link>
-          <p className="inline-block">/</p>
-          <Link className ="inline-block mx-2 hover:text-gray-400 focus:underline focus:font-bold" href="/song_library" tabIndex={0}>Song Library</Link>
-          <p className="inline-block">/</p>
-          <Link className ="inline-block mx-2 hover:text-gray-400 focus:underline focus:font-bold" href="/media_mode" tabIndex={0}>Media Mode</Link>
+        <div className="flex">
+          <Link className ="mx-2 my-auto h-fit items-center hover:text-gray-400 focus:underline focus:font-bold" href="./" tabIndex={0}>Create Set</Link>
+          <p className="my-auto">/</p>
+          <Link className ="mx-2 my-auto h-fit items-center hover:text-gray-400 focus:underline focus:font-bold" href="/song_library" tabIndex={0}>Song Library</Link>
+          <p className="my-auto">/</p>
+          <Link className ="mx-2 my-auto h-fit items-center hover:text-gray-400 focus:underline focus:font-bold" href="/media_mode" tabIndex={0}>Media Mode</Link>
           <UserButton appearance={{
             elements: {
               rootBox: 'inline-block mx-2 align-bottom'}}}/>
+          <SignedOut>
+            <SignInButton mode="modal">
+            <button className="box-border inline-block font-semibold text-white text-sm p-2 ml-3 bg-ssmblue800 rounded-md hover:bg-ssmbluenight active:bg-ssmbluenight">Sign In</button>
+            </SignInButton>
+          </SignedOut>
         </div>
 
       </div>
