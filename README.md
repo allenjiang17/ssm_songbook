@@ -8,7 +8,7 @@ Songbook is built with React/Next.js, using Tailwind CSS, hosted on Vercel with 
 
 ## See Live: 
 
-<a href="ssm-songbook.vercel.app">Access a live version of Songbook</a>.  If you'd like to use or modify Songbook for your own use, you can download this repo and test by running a development server  
+<a href="http://ssm-songbook.vercel.app">Access a live version of Songbook</a>.  If you'd like to use or modify Songbook for your own use, you can download this repo and test by running a development server  
 
 ```bash
 npm run dev
