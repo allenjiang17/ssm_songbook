@@ -1,8 +1,14 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Description:
 
-## Getting Started
+Songbook is a web app for managing music sets. It provides an easy and streamlined workflow for creating sets of songs, editing and transposing chord sheets, and exporting song sheets as pdfs, word docs, and more. It features an editable database of songs, protected with user log-in and authentication, as well as "Media Mode" -- an interface for projecting lyrics during live band play. 
 
-First, run the development server:
+## Technologies: 
+
+Songbook is built with React/Next.js, using Tailwind CSS, hosted on Vercel with a MongoDB database for storage. User log-in and authentication is through Clerk. 
+
+## See Live: 
+
+<a href="ssm-songbook.vercel.app">Access a live version of Songbook</a>.  If you'd like to use or modify Songbook for your own use, you can download this repo and test by running a development server  
 
 ```bash
 npm run dev
@@ -13,14 +19,3 @@ pnpm dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Technologies Used
-
-SSM Songbook is built with Next.js, using Tailwind CSS and hosted on Vercel.
-The database used for song storage is on MongoDB.
-Clerk is used for user authentication and log-in.
-
