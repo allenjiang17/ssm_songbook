@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react';
 import {SongContext} from '../song_context.js';
 import {useContext} from 'react';
 import { TextButton } from './text_button.js';
-import Popup from 'reactjs-popup';
+import {Popup} from 'reactjs-popup';
 import { useUser, useOrganizationList } from '@clerk/nextjs';
 
 import * as docx from 'docx'
