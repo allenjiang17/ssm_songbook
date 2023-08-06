@@ -13,7 +13,7 @@ export default async function handler(request, response) {
 
       var result = await base_song_library.updateOne(
         {id: new_song.id },
-        { $set: {title: new_song.title, author: new_song.author, sheet: new_song.sheet, lyrics: new_song.lyrics} }
+        { $set: {title: new_song.title, author: new_song.author, sheet: new_song.sheet, lyrics: new_song.lyrics, key: new_song.key} }
       );
 
       console.log(result);

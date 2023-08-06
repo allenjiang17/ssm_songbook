@@ -82,7 +82,7 @@ export function EditSong() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({id: current_song.id, title: s_title, author: s_author, tempo: s_tempo, sheet: s_sheet, lyrics: remove_chord_lines(s_sheet)})
+            body: JSON.stringify({id: current_song.id, title: s_title, author: s_author, tempo: s_tempo, sheet: s_sheet, lyrics: remove_chord_lines(s_sheet), key: readKey(s_sheet)})
         });
 
         console.log(response);

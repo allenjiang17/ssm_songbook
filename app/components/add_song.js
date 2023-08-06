@@ -3,7 +3,7 @@
 import React, {useState} from 'react';
 import {SongContext} from '../song_context.js';
 import {useContext} from 'react';
-import {remove_chord_lines} from './transposer'
+import {remove_chord_lines, readKey} from './transposer'
 import { useOrganizationList } from "@clerk/nextjs";
 import { TextButton } from './text_button.js';
 
@@ -41,7 +41,7 @@ export function AddSong() {
             headers: {
               'Content-Type': 'application/json',
             },
-            body: JSON.stringify({id: 'd' + id_time.getTime(), title: s_title, author: s_author, tempo: s_tempo, sheet: s_sheet, lyrics: remove_chord_lines(s_sheet)})
+            body: JSON.stringify({id: 'd' + id_time.getTime(), title: s_title, author: s_author, tempo: s_tempo, sheet: s_sheet, lyrics: remove_chord_lines(s_sheet), key: readKey(s_sheet)})
             });
 
         console.log(response);
