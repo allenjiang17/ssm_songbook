@@ -5,7 +5,7 @@ import {SongContext} from '../song_context.js';
 import {useContext} from 'react';
 import {SongDisplay} from '../components/song_display.js';
 import {SheetDashboard} from '../components/sheet_dashboard.js';
-import {remove_chord_lines} from './transposer'
+import {remove_chord_lines, readKey} from './transposer'
 import Popup from 'reactjs-popup';
 import { useOrganizationList } from "@clerk/nextjs";
 import { TextButton } from './text_button.js';
