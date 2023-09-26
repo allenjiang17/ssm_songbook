@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Search} from '../components/search.js';
 import {DraggableList} from '../components/set_list.js';
 import {SongContext} from '../song_context.js';
@@ -11,12 +11,21 @@ import {ImportSetTable} from '../components/import_set_table.js'
 
 export function MediaInterface(props){
   let init_song = {id:'', title:'', author:'', sheet:'', lyrics:''}; 
+  let init_set_list = [];
+  if (localStorage.getItem("SetList")) {
+    init_set_list = JSON.parse(localStorage.getItem("SetList"));
+  }
 
-  const [set_list, update_set_list] = useState([]); 
+  const [set_list, update_set_list] = useState(init_set_list); 
   const [current_set_song, update_current_set_song] = useState();
   const [current_song, update_current_song] = useState(init_song); //eventually move up to top level
   const [popup_open, set_popup_open] = useState(false);
   const closePopup = () => set_popup_open(false);
+
+  useEffect(()=>{
+    localStorage.setItem("SetList", JSON.stringify(set_list));
+  }, [set_list]);
+
 
   async function importSet() {
     set_popup_open(o=>!o);

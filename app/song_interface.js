@@ -1,5 +1,5 @@
 'use client'
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Search} from './components/search.js';
 import {DraggableList} from './components/set_list.js';
 import {SongDisplay} from './components/song_display.js';
@@ -9,9 +9,18 @@ import {ExportInterface} from './components/export.js';
 
 export function SongInterface(props){
 
-  const [set_list, update_set_list] = useState([]); 
+  let init_set_list = [];
+  if (localStorage.getItem("SetList")) {
+    init_set_list = JSON.parse(localStorage.getItem("SetList"));
+  }
+
+  const [set_list, update_set_list] = useState(init_set_list); 
   const [current_set_song, update_current_set_song] = useState();
   const [current_song, update_current_song] = useState(); //eventually move up to top level
+
+  useEffect(()=>{
+    localStorage.setItem("SetList", JSON.stringify(set_list));
+  }, [set_list]);
 
   return (
   <SongContext.Provider value={{set_list, update_set_list, current_song, update_current_song, current_set_song, update_current_set_song}}>
