@@ -16,7 +16,9 @@ export function MediaLyricsInterface(props) {
     const {isLoaded, isSignedIn, user} = useUser();
     var can_edit, guest;
     if (isLoaded && isSignedIn) {
-        can_edit = props.edit_list.includes(user?.id);
+        //can_edit = props.edit_list.includes(user?.id);
+        can_edit = user?.publicMetadata['edit_privileges'];
+
         if (can_edit) {
         console.log("User has edit privileges")
         } else {
