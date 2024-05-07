@@ -17,24 +17,41 @@ export function SongInterface(props){
   const [set_list, update_set_list] = useState(init_set_list); 
   const [current_set_song, update_current_set_song] = useState();
   const [current_song, update_current_song] = useState(); //eventually move up to top level
+  const [sidebarVisible, setSidebarVisible] = useState(true);
+  const [font_size, update_font_size] = useState(6);
+  const [line_height, update_line_height] = useState(9);
 
+  const toggleSidebar = () => {
+      setSidebarVisible(!sidebarVisible);
+  };
+  
   useEffect(()=>{
     localStorage.setItem("SetList", JSON.stringify(set_list));
+   
   }, [set_list]);
 
   return (
-  <SongContext.Provider value={{set_list, update_set_list, current_song, update_current_song, current_set_song, update_current_set_song}}>
+  <SongContext.Provider value={{set_list, update_set_list, current_song, update_current_song, current_set_song, update_current_set_song, font_size, update_font_size, line_height, update_line_height}}>
   <div id="wrapper" className="box-border flex flex-row mx-auto w-11/12 relative">
-    <div id="side_bar" className="box-border min-w-max m-0 p-0.6 w-1/5">
+    <div id="side_bar" className={`box-border min-w-max m-0 p-0.6  ${sidebarVisible ? 'w-1/5' : 'hidden'}`}>
         <Search database = {props.database} dashboard_display = {"block"} hide_with_no_input = {false} />
         <p id="set_list_label" className = "mb-2 text-base font-semibold">Set List</p>
         <DraggableList database = {props.database} 
           set_list={set_list} />
         <ExportInterface edit_list = {props.edit_list}/>
     </div>
-    <div id="chord_display" className="box-border min-w-max ml-3 w-4/5 block">
+    <div className="relative flex-grow">
+      <button onClick={toggleSidebar} className="absolute top-1/2 left-0 transform -translate-y-1/2 bg-ssmblue py-2 rounded-md shadow-md z-10">
+        {sidebarVisible ? (
+            <img src="/side-collapse.svg" alt="Hide Sidebar" className="w-6 h-6" />
+        ) : (
+            <img src="/side-expand.svg" alt="Show Sidebar" className="w-6 h-6" />
+        )}
+      </button>
+    <div id="chord_display" className={`box-border min-w-max ml-3 ${sidebarVisible ? '' : 'w-full'}`}>
       <ChordDashboard song = {current_song}/>
       <SongDisplay song = {current_song} window_height={"h-[calc(100vh-120px)]"}/>
+    </div>
     </div>
   </div>
   </SongContext.Provider>
