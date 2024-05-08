@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useContext, useEffect, useCallback} from 'react';
 import {LyricContext} from '../media_mode/lyricContext.js';
 import {SongContext} from '../song_context.js';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
@@ -75,6 +75,46 @@ export function MediaLyricsInterface(props) {
         console.log(response);
         location.reload();
 
+    }
+
+    const handleKeyDown = useCallback((event) => {
+        switch (event.key) {
+            case 'ArrowUp':
+                navigateToPreviousLyric();
+                break;
+            case 'ArrowDown':
+                navigateToNextLyric();
+                break;
+            case 'ArrowLeft':
+                navigateToPreviousLyric();
+                break;
+            case 'ArrowRight':
+                navigateToNextLyric();
+                break;
+            default:
+                break;
+        }
+    }, [lyrics_list, current_lyric_no]); // Include dependencies to avoid stale closures
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleKeyDown);
+        return () => {
+            document.removeEventListener('keydown', handleKeyDown);
+        };
+    }, [handleKeyDown]);
+
+    function navigateToPreviousLyric() {
+        updateCurrentLyricByOffset(-1);
+    }
+
+    function navigateToNextLyric() {
+        updateCurrentLyricByOffset(1);
+    }
+
+    function updateCurrentLyricByOffset(offset) {
+        const newLyricIndex = (current_lyric_no + offset + lyrics_list.length) % lyrics_list.length;
+        update_current_lyric(lyrics_list[newLyricIndex]);
+        update_current_lyric_no(newLyricIndex);
     }
 
 
@@ -162,7 +202,7 @@ function DraggableList() {
 
 function ListItem(props) {
 
-    const {current_lyric, current_lyric_no, update_current_lyric, update_current_lyric_no} = useContext(LyricContext);
+    const {current_lyric, current_lyric_no, lyrics_list, update_current_lyric, update_current_lyric_no} = useContext(LyricContext);
     let select_style;
     if (current_lyric_no == props.id) {
         select_style = "box-border w-full p-2 bg-ssmblue400 text-white";
@@ -173,8 +213,9 @@ function ListItem(props) {
     function selectLyricToDisplay() {
         update_current_lyric(props.lyric);
         update_current_lyric_no(props.id);
+    };
 
-    }
+    
 
     return (<li className={select_style}
         onClick = {selectLyricToDisplay}>
