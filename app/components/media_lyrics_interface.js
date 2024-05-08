@@ -117,6 +117,15 @@ export function MediaLyricsInterface(props) {
         update_current_lyric_no(newLyricIndex);
     }
 
+    const [isPopupVisible, setPopupVisible] = useState(false);
+
+    const handleIconHover = () => {
+        setPopupVisible(true);
+    };
+
+    const handleIconLeave = () => {
+        setPopupVisible(false);
+    };
 
     return (
         <LyricContext.Provider value={{lyrics_list, current_lyric, current_lyric_no, update_lyrics_list, update_current_lyric, update_current_lyric_no}}>
@@ -135,9 +144,25 @@ export function MediaLyricsInterface(props) {
             <Popup open={popup_open} onClose={closePopup}>
                 <SignedIn>
                     <div className="box-border bg-gray-100 w-96 rounded-md p-5 w-fit h-fit drop-shadow-lg dark:bg-gray-700">
-                    <div className="flex justify-between">
-                        <p className = "inline-block mb-2 text-lg font-semibold">Edit Lyrics</p>
-                        <img src= "./x-lg.svg" className="inline-block ml-1 h-fit hover:bg-gray-300" onClick={closePopup}/>
+                    <div className="relative group">
+                        <div className="flex justify-between items-center">
+                            <div className="flex items-center">
+                                <p className="inline-block mb-2 text-lg font-semibold mr-2">Edit Lyrics</p>
+                                <div className="inline-block cursor-pointer hover:bg-gray-300 p-1 rounded-full mb-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-gray-500 i-icon" viewBox="0 0 20 20" fill="currentColor"
+                                    onMouseEnter={handleIconHover}
+                                    onMouseLeave={handleIconLeave}>
+                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm0-2a6 6 0 100-12 6 6 0 000 12zM10 9a1 1 0 011 1v4a1 1 0 01-2 0v-4a1 1 0 011-1zm0-4a1 1 0 110 2 1 1 0 010-2z" clipRule="evenodd" />
+                                    </svg>
+                                </div>
+                            </div>
+                            <div className="flex items-center">
+                                <img src="./x-lg.svg" className="mb-2 inline-block h-fit x-button hover:bg-gray-300 hover:cursor-pointer p-1" onClick={closePopup} />
+                            </div>
+                        </div>
+                        <div className={`absolute bg-white border border-gray-200 rounded-lg shadow-md p-4 text-sm -mt-24 w-48 ${isPopupVisible ? 'visible' : 'invisible'}`}>
+                            <p>two newlines = new slide</p>
+                        </div>
                     </div>
                     <textarea className="box-border w-full font-mono text-sm m-0 p-8 rounded-none border-solid border-2 h-[60vh] w-[50vw] dark:bg-gray-900 dark:border-none" value={edit_lyrics_sheet} onChange={updateSheet}></textarea>
                     <TextButton handler={submitEditLyrics} button_text={"Submit"}/>
