@@ -77,7 +77,7 @@ export function Search(props){
         update_current_set_song(-1);
     }
 
-    return <li className="w-calc-100-minus-0.8em m-0 p-2 block text-sm font-normal hover:bg-gray-200 focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600" tabIndex={0}
+    return <li className="w-calc-100-minus-0.8em m-0 p-2 block text-sm font-normal hover:bg-gray-200 focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600 hover:cursor-pointer" tabIndex={0}
     data-id={props.song.id} onClick={selectSongToDisplay} onDoubleClick={addSongToSet}>{props.song.title}</li>
   }
 

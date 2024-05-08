@@ -2,9 +2,8 @@ import './globals.css'
 import Link from 'next/link'
 import { ClerkProvider } from '@clerk/nextjs'
 import { UserButton, SignInButton, SignedOut } from "@clerk/nextjs";
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {SongContext} from './song_context.js';
-
 
 export const metadata = {
   title: 'SSM Songbook',
@@ -40,7 +39,6 @@ export default function RootLayout({
             </SignInButton>
           </SignedOut>
         </div>
-
       </div>
         {children}
       </body>

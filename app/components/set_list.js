@@ -4,7 +4,6 @@ import {useContext} from 'react';
 import {DragDropContext, Droppable, Draggable} from 'react-beautiful-dnd';
 import {transpose, readKey} from './transposer.js';
 
-
 export function DraggableList(props) {
     const {set_list, update_set_list} = useContext(SongContext); 
 
@@ -67,7 +66,6 @@ function ListItem(props) {
     function selectSongToDisplay() {
         update_current_song(props.song);
         update_current_set_song(props.id);
-
     }
 
     return (<li className={select_style}

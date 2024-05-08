@@ -8,7 +8,6 @@ import { TextButton } from '../components/text_button.js';
 import Popup from 'reactjs-popup';
 import {ImportSetTable} from '../components/import_set_table.js'
 
-
 export function MediaInterface(props){
   let init_song = {id:'', title:'', author:'', sheet:'', lyrics:''}; 
   let init_set_list = [];

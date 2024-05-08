@@ -17,9 +17,23 @@ const font_down_icon=(<svg width="16" height="16" fill="white">
 <path d="m 4.4987912,2.4999997 c 0,-0.666666 -1,-0.666666 -1,0 V 12.293 l -1.146,-1.147 c -0.472,-0.472 -1.18,0.236 -0.708,0.708 l 2,1.999 0.007,0.007 c 0.195401,0.190538 0.507893,0.18786 0.7,-0.006 l 2,-2 c 0.471999,-0.471333 -0.235001,-1.179333 -0.707,-0.708 l -1.146,1.147 z"/>
 </svg>);
 
+const leftArrowIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-left" viewBox="0 0 16 16">
+      <path fillRule="evenodd" d="M3.646 8 9.75 1.896a.5.5 0 1 1 .708.708L4.707 8l5.75 5.396a.5.5 0 1 1-.708.708L3.646 8z"/>
+    </svg>
+  );
+  
+  const rightArrowIcon = (
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" className="bi bi-arrow-right" viewBox="0 0 16 16">
+      <path fillRule="evenodd" d="M12.354 8 6.25 1.896a.5.5 0 0 1 .708-.708l6.5 6.5a.5.5 0 0 1 0 .708l-6.5 6.5a.5.5 0 1 1-.708-.708L12.354 8z"/>
+    </svg>
+  );
+  
+  
+
 export function ChordDashboard(props) {
 
-    const {current_song, update_current_song, current_set_song, set_list, update_set_list, font_size, update_font_size, line_height, update_line_height} = useContext(SongContext);
+    const {current_song, update_current_song, current_set_song, update_current_set_song, set_list, update_set_list, font_size, update_font_size, line_height, update_line_height} = useContext(SongContext);
 
     var display_key = "?"
 
@@ -65,16 +79,33 @@ export function ChordDashboard(props) {
         update_line_height(line_height-1.2);
 
     }
+
+    function nextSong() {
+        if (current_set_song < set_list.length-1) {
+            update_current_song(set_list[current_set_song+1]);
+            update_current_set_song(current_set_song+1);
+        }
+    }
+    function prevSong() {
+        console.log(current_set_song);
+        if (current_set_song > 0) {
+            update_current_song(set_list[current_set_song-1]);
+            update_current_set_song(current_set_song-1);
+        }
+    }
     
     return (
         <div className="box-border flex p-2 bg-ssmblue w-full justify-between">
             <AddSongButton/>
+            <div className="m-0 p-0 inline-block text-left text-white ">
+                <IconButton handler={prevSong} button_icon={leftArrowIcon} />
+                <IconButton handler={nextSong} button_icon={rightArrowIcon}/>
+            </div>
             <div className="m-0 p-0 inline-block text-right">
-            <IconButton handler={fontSizeUp} button_icon={font_up_icon}/>
-                <IconButton handler={fontSizeDown} button_icon={font_down_icon}/>
+                <IconButton handler={fontSizeUp} button_icon={font_up_icon} color='#0D336A'/>
+                <IconButton handler={fontSizeDown} button_icon={font_down_icon} color='#0D336A'/>
                 <div id="key_label" className="inline-block align-middle text-base text-white font-light ml-2"> Current Key: </div>
                 <div id="key_display" className="inline-block align-middle text-base text-white font-bold w-4 mr-4 py-1 px-2 text-left">{display_key}</div>
-                
                 <TransposeButton sign="-" handler={transpose_key_down}/>
                 <TransposeButton sign="+" handler={transpose_key_up}/>
                 

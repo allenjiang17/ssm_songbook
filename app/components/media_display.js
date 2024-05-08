@@ -44,7 +44,6 @@ export function MediaDisplay(props) {
         screen_preview = "whitespace-pre-wrap box-border w-full h-64 bg-black text-white text-center pt-4";
     }
 
-
     window?.addEventListener("beforeunload", (event) => {
             if (present_window != null) { 
                 present_window.close(); 
