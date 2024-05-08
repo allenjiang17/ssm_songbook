@@ -82,7 +82,7 @@ export function SongLibraryTable(props){
 
     }
 
-    return (<tr className="text-sm font-normal hover:bg-gray-200 focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600" tabIndex={0}
+    return (<tr className="text-sm font-normal hover:bg-gray-200 focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600 hover:cursor-pointer" tabIndex={0}
     data-id={props.song.id} onClick={selectSongToDisplay}>
         <td className="p-1">{props.song.title}</td>
         <td className="p-1">{props.song.author}</td>
