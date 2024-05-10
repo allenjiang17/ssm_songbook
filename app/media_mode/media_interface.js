@@ -30,10 +30,6 @@ export function MediaInterface(props){
     set_popup_open(o=>!o);
   }
 
-  async function importPDF() {
-   
-  }
-
   return (
   <SongContext.Provider value={{set_list, update_set_list, current_song, update_current_song, current_set_song, update_current_set_song}}>
   <div id="wrapper" className="box-border flex flex-row mx-auto w-11/12 relative">
@@ -56,7 +52,7 @@ export function MediaInterface(props){
         <div className="box-border bg-gray-100 w-96 rounded-md p-5 drop-shadow-lg dark:bg-gray-700">
               <div className="flex justify-between">
                 <p className = "inline-block mb-2 text-lg font-semibold">Import Set</p>
-                <img src= "./x-lg.svg" className="inline-block ml-1 h-fit hover:bg-gray-300" onClick={closePopup}/>
+                <img src= "./x-lg.svg" className="inline-block ml-1 h-fit hover:bg-gray-300 p-1 hover:cursor-pointer" onClick={closePopup}/>
               </div>
               <ImportSetTable import_sets={props.set_db}/>
         </div>
