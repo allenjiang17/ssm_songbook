@@ -28,7 +28,7 @@ export function SongDisplay(props) {
         display = props.song.sheet;
     }
         return (
-            <textarea className={style} style={screen_preview_font} value={display} onChange={change_sheet}></textarea>
+            <textarea className={style} style={screen_preview_font} value={display} onChange={change_sheet} spellCheck={false}></textarea>
         )
 
 }

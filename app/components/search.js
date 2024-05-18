@@ -62,23 +62,37 @@ export function Search(props){
   
   }
   
-  export function SearchBarResultsItem(props){
-    const {set_list, update_set_list, update_current_song, update_current_set_song} = useContext(SongContext); 
-
+  export function SearchBarResultsItem(props) {
+    const { set_list, update_set_list, update_current_song, update_current_set_song } = useContext(SongContext);
+    const [hovered, setHovered] = useState(false);
+  
     function addSongToSet() {
-      //React state objects should be considered immutable.
+      // React state objects should be considered immutable.
       // Mutating the array won't cause the state change to be noticed for re-render
       var new_song = JSON.parse(JSON.stringify(props.song))
       update_set_list([...set_list, new_song]);
     }
-
+  
     function selectSongToDisplay() {
-        update_current_song(props.song);
-        update_current_set_song(-1);
+      update_current_song(props.song);
+      update_current_set_song(-1);
     }
-
-    return <li className="w-calc-100-minus-0.8em m-0 p-2 block text-sm font-normal hover:bg-gray-200 focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600" tabIndex={0}
-    data-id={props.song.id} onClick={selectSongToDisplay} onDoubleClick={addSongToSet}>{props.song.title}</li>
+  
+    return (
+      <li
+        className="w-calc-100-minus-0.8em m-0 p-2 block text-sm font-normal hover:bg-gray-200 focus:bg-gray-300 dark:hover:bg-gray-600 dark:focus:bg-gray-600 hover:cursor-pointer relative"
+        tabIndex={0}
+        data-id={props.song.id}
+        onClick={selectSongToDisplay}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      >
+        {props.song.title}
+        {hovered && (
+          <img src= "./plus.svg" className=" hover:bg-gray-300 absolute mx-2 p-1 right-0 top-0 bottom-0 top-1/2 transform -translate-y-1/2" onClick={addSongToSet}/>
+        )}
+      </li>
+    );
   }
 
   export function SearchDashboard(props) {

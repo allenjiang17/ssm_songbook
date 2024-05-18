@@ -8,7 +8,6 @@ import { TextButton } from '../components/text_button.js';
 import Popup from 'reactjs-popup';
 import {ImportSetTable} from '../components/import_set_table.js'
 
-
 export function MediaInterface(props){
   let init_song = {id:'', title:'', author:'', sheet:'', lyrics:''}; 
   let init_set_list = [];
@@ -53,7 +52,7 @@ export function MediaInterface(props){
         <div className="box-border bg-gray-100 w-96 rounded-md p-5 drop-shadow-lg dark:bg-gray-700">
               <div className="flex justify-between">
                 <p className = "inline-block mb-2 text-lg font-semibold">Import Set</p>
-                <img src= "./x-lg.svg" className="inline-block ml-1 h-fit hover:bg-gray-300" onClick={closePopup}/>
+                <img src= "./x-lg.svg" className="inline-block ml-1 h-fit hover:bg-gray-300 p-1 hover:cursor-pointer" onClick={closePopup}/>
               </div>
               <ImportSetTable import_sets={props.set_db}/>
         </div>

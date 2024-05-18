@@ -53,7 +53,7 @@ export function ImportSetTable(props){
 
     }
 
-    return (<tr className="text-sm font-normal hover:bg-gray-200 active:bg-ssmblue active:text-white dark:hover:bg-gray-600 dark:focus:bg-gray-600" tabIndex={0}
+    return (<tr className="text-sm font-normal hover:bg-gray-200 active:bg-ssmblue active:text-white dark:hover:bg-gray-600 dark:focus:bg-gray-600 hover:cursor-pointer" tabIndex={0}
     onClick={selectSet}>
         <td className="p-1">{props.set.set_name}</td>
         <td className="p-1">{props.set.set_author}</td>
